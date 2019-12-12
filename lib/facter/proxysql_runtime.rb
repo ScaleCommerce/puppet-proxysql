@@ -13,7 +13,7 @@ Facter.add(:proxysql_runtime) do
     end
 
     begin
-      client = Mysql2::Client.new(default_file: '/root/.my.cnf')
+      client = Mysql2::Client.new(default_file: '/root/.my.proxysql.cnf')
     rescue Mysql2::Error::ConnectionError => e
       Facter.debug(e.inspect)
     end

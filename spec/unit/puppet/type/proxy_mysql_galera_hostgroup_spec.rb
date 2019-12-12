@@ -35,7 +35,7 @@ describe Puppet::Type.type(:proxy_mysql_galera_hostgroup) do
   end
 
   describe 'autorequiring' do
-    let(:mysql_settings_file) { Puppet::Type.type(:file).new(name: '/root/.my.cnf', ensure: :file) }
+    let(:mysql_settings_file) { Puppet::Type.type(:file).new(name: '/root/.my.proxysql.cnf', ensure: :file) }
     let(:proxysql_service) { Puppet::Type.type(:service).new(name: 'proxysql', ensure: 'running') }
     let(:catalog) { Puppet::Resource::Catalog.new }
     let(:resource) { described_class.new(title: 'resourcetitle', writer_hostgroup: 1, backup_writer_hostgroup: 2, reader_hostgroup: 3, offline_hostgroup: 4) }

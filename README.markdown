@@ -368,7 +368,7 @@ Determines whether this module will configure the ProxySQL configuration file. D
 
 ##### `mycnf_file_name`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
-This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.cnf'
+This will only be configured if `manage_mycnf_file` is set to `true`. Defaults to '/root/.my.proxysql.cnf'
 
 ##### `manage_mycnf_file`
 Determines whether this module will configure the my.cnf file to connect to the admin interface. Defaults to 'true'

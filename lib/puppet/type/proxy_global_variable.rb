@@ -2,7 +2,7 @@
 Puppet::Type.newtype(:proxy_global_variable) do
   @doc = 'Manage a ProxySQL global variable.'
 
-  autorequire(:file) { '/root/.my.cnf' }
+  autorequire(:file) { '/root/.my.proxysql.cnf' }
   autorequire(:class) { 'mysql::client' }
   autorequire(:service) { 'proxysql' }
 

@@ -68,7 +68,7 @@ describe 'proxysql' do
                                                                 owner: sys_user,
                                                                 group: sys_group,
                                                                 mode: '0400',
-                                                                path: '/root/.my.cnf')
+                                                                path: '/root/.my.proxysql.cnf')
           end
 
           it do
