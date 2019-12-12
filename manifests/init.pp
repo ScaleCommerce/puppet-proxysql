@@ -229,22 +229,22 @@ class proxysql (
   $settings = {
     datadir => $datadir,
     admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password.unwrap}",
+      admin_credentials => "${admin_username}:${admin_password}",
       mysql_ifaces => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
-      monitor_password => $monitor_password.unwrap,
+      monitor_password => $monitor_password,
     },
   }
 
   if $cluster_name {
     $settings_cluster = {
       admin_variables => {
-        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        admin_credentials => "${admin_username}:${admin_password};${cluster_username}:${cluster_password}",
         cluster_username => $cluster_username,
-        cluster_password => "${cluster_password.unwrap}",
+        cluster_password => "${cluster_password}",
       },
     }
   } else {
