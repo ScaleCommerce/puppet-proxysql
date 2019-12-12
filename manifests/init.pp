@@ -170,13 +170,13 @@ class proxysql (
   String $listen_socket = $proxysql::params::listen_socket,
 
   String $admin_username = $proxysql::params::admin_username,
-  Sensitive[String] $admin_password = $proxysql::params::admin_password,
+  String $admin_password = $proxysql::params::admin_password,
   String $admin_listen_ip = $proxysql::params::admin_listen_ip,
   Integer $admin_listen_port = $proxysql::params::admin_listen_port,
   String $admin_listen_socket = $proxysql::params::admin_listen_socket,
 
   String $monitor_username = $proxysql::params::monitor_username,
-  Sensitive[String] $monitor_password = $proxysql::params::monitor_password,
+  String $monitor_password = $proxysql::params::monitor_password,
 
   Boolean $split_config = $proxysql::params::split_config,
 
@@ -210,7 +210,7 @@ class proxysql (
   String $sys_group = $sys_owner,
 
   String $cluster_username = $proxysql::params::cluster_username,
-  Sensitive[String] $cluster_password = $proxysql::params::cluster_password,
+  String $cluster_password = $proxysql::params::cluster_password,
 
   Hash $override_config_settings = {},
 
