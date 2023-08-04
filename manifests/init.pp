@@ -212,9 +212,9 @@ class proxysql (
     datadir => $datadir,
     errorlog => $errorlog_file,
     admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password.unwrap}",
+      admin_credentials => "${admin_username}:${admin_password}",
       mysql_ifaces      => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-      stats_credentials => "${stats_username}:${stats_password.unwrap}",
+      stats_credentials => "${stats_username}:${stats_password}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
@@ -233,9 +233,9 @@ class proxysql (
   $cluster_settings = $cluster_name ? {
     String  => {
       admin_variables => {
-        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        admin_credentials => "${admin_username}:${admin_password};${cluster_username}:${cluster_password}",
         cluster_username  => $cluster_username,
-        cluster_password  => "${cluster_password.unwrap}",
+        cluster_password  => "${cluster_password}",
       },
     },
     default => {},
