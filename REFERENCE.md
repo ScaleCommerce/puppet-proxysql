@@ -339,7 +339,7 @@ Data type: `String`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 This will only be configured if `manage_mycnf_file` is set to `true`.
 
-Default value: `'/root/.my.cnf'`
+Default value: `'/root/.my.proxysql.cnf'`
 
 ##### <a name="-proxysql--manage_mycnf_file"></a>`manage_mycnf_file`
 

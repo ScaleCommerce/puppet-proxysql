@@ -170,7 +170,7 @@ class proxysql (
   String $config_file = '/etc/proxysql.cnf',
   Boolean $manage_config_file = true,
 
-  String $mycnf_file_name = '/root/.my.cnf',
+  String $mycnf_file_name = '/root/.my.proxysql.cnf',
   Boolean $manage_mycnf_file = true,
 
   Boolean $restart = false,
