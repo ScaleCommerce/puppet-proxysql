@@ -252,9 +252,9 @@ class proxysql (
   contain proxysql::reload_config
   contain proxysql::configure
 
-  if $manage_selinux and extlib::has_module('puppet/selinux') and fact('os.selinux.current_mode') in ['enforcing','permissive'] {
-    include proxysql::selinux
-  }
+  # if $manage_selinux and extlib::has_module('puppet/selinux') and fact('os.selinux.current_mode') in ['enforcing','permissive'] {
+  #   include proxysql::selinux
+  # }
 
   Class['proxysql::prerequisites']
   -> Class['proxysql::repo']
