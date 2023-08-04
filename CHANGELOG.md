@@ -4,6 +4,102 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v6.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v6.0.0) (2021-06-14)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.1.0...v6.0.0)
+
+**Breaking changes:**
+
+- Drop EoL Ubuntu 16.04 support [\#170](https://github.com/voxpupuli/puppet-proxysql/pull/170) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL Debian 8 support [\#169](https://github.com/voxpupuli/puppet-proxysql/pull/169) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL Puppet 5 support [\#168](https://github.com/voxpupuli/puppet-proxysql/pull/168) ([bastelfreak](https://github.com/bastelfreak))
+- Drop EoL CentOS from metadata.json [\#167](https://github.com/voxpupuli/puppet-proxysql/pull/167) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Enable Puppet 7 support [\#171](https://github.com/voxpupuli/puppet-proxysql/pull/171) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/apt: Allow 8.x [\#165](https://github.com/voxpupuli/puppet-proxysql/pull/165) ([bastelfreak](https://github.com/bastelfreak))
+- puppetlabs/stdlib: Allow 7.x [\#163](https://github.com/voxpupuli/puppet-proxysql/pull/163) ([bastelfreak](https://github.com/bastelfreak))
+- camptocamp/systemd: allow 3.x [\#162](https://github.com/voxpupuli/puppet-proxysql/pull/162) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- puppetlabs/mysql: Allow 12.x [\#164](https://github.com/voxpupuli/puppet-proxysql/pull/164) ([bastelfreak](https://github.com/bastelfreak))
+- Add puppet-strings docs [\#156](https://github.com/voxpupuli/puppet-proxysql/pull/156) ([baurmatt](https://github.com/baurmatt))
+- Move static defaults out of params.pp [\#155](https://github.com/voxpupuli/puppet-proxysql/pull/155) ([alexjfisher](https://github.com/alexjfisher))
+
+## [v5.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v5.1.0) (2020-09-01)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.3...v5.1.0)
+
+**Implemented enhancements:**
+
+- Add ability to configure errorlog file path and mode [\#153](https://github.com/voxpupuli/puppet-proxysql/pull/153) ([Anirudhra10](https://github.com/Anirudhra10))
+
+**Merged pull requests:**
+
+- Release 5.1.0 version [\#154](https://github.com/voxpupuli/puppet-proxysql/pull/154) ([Anirudhra10](https://github.com/Anirudhra10))
+
+## [v5.0.3](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.3) (2020-08-25)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.2...v5.0.3)
+
+**Implemented enhancements:**
+
+- Introduce `manage_mysql_client` boolean to toggle whether or not to include mysql::client [\#149](https://github.com/voxpupuli/puppet-proxysql/pull/149) ([walkleyn](https://github.com/walkleyn))
+- Add support for changing stat user's credentials [\#145](https://github.com/voxpupuli/puppet-proxysql/pull/145) ([Goorzhel](https://github.com/Goorzhel))
+
+## [v5.0.2](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.2) (2020-05-23)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.1...v5.0.2)
+
+**Fixed bugs:**
+
+- Fixup Amazon 2016 issues [\#148](https://github.com/voxpupuli/puppet-proxysql/pull/148) ([alexjfisher](https://github.com/alexjfisher))
+- provider: explicitly stringify output of mysql query [\#142](https://github.com/voxpupuli/puppet-proxysql/pull/142) ([SimonPe](https://github.com/SimonPe))
+- Stop creating spurious files [\#141](https://github.com/voxpupuli/puppet-proxysql/pull/141) ([saz](https://github.com/saz))
+
+**Merged pull requests:**
+
+- Use voxpupuli-acceptance [\#144](https://github.com/voxpupuli/puppet-proxysql/pull/144) ([ekohl](https://github.com/ekohl))
+
+## [v5.0.1](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.1) (2020-03-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v5.0.0...v5.0.1)
+
+**Fixed bugs:**
+
+- ProxySQL 2 gets restarted as root [\#134](https://github.com/voxpupuli/puppet-proxysql/issues/134)
+- Use distinct names for yum repos [\#138](https://github.com/voxpupuli/puppet-proxysql/pull/138) ([alexjfisher](https://github.com/alexjfisher))
+
+**Closed issues:**
+
+- Acceptance tests on CentOS 6 stopped working [\#137](https://github.com/voxpupuli/puppet-proxysql/issues/137)
+- ProxySQL errors after 2.0.9 release [\#133](https://github.com/voxpupuli/puppet-proxysql/issues/133)
+
+**Merged pull requests:**
+
+- Avoid reloading proxysql 2 as root [\#135](https://github.com/voxpupuli/puppet-proxysql/pull/135) ([alexjfisher](https://github.com/alexjfisher))
+
+## [v5.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v5.0.0) (2019-12-18)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v4.0.0...v5.0.0)
+
+**Breaking changes:**
+
+- drop Ubuntu 14.04 support [\#123](https://github.com/voxpupuli/puppet-proxysql/pull/123) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Manage SELinux rules to allow logrotate to work [\#126](https://github.com/voxpupuli/puppet-proxysql/pull/126) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Run acceptance tests on CentOS 7.6 [\#129](https://github.com/voxpupuli/puppet-proxysql/pull/129) ([alexjfisher](https://github.com/alexjfisher))
+- Remove default `config_settings` from params.pp [\#128](https://github.com/voxpupuli/puppet-proxysql/pull/128) ([alexjfisher](https://github.com/alexjfisher))
+- Remove duplicate CONTRIBUTING.md file [\#124](https://github.com/voxpupuli/puppet-proxysql/pull/124) ([dhoppe](https://github.com/dhoppe))
+- Replace `anchor` pattern with `contain` [\#122](https://github.com/voxpupuli/puppet-proxysql/pull/122) ([alexjfisher](https://github.com/alexjfisher))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-proxysql/tree/v4.0.0) (2019-11-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v3.1.0...v4.0.0)
@@ -138,14 +234,6 @@ These should not affect the functionality of the module.
 
 [Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.1...v1.1.2)
 
-**Merged pull requests:**
-
-- release 1.1.2 [\#14](https://github.com/voxpupuli/puppet-proxysql/pull/14) ([mcrauwel](https://github.com/mcrauwel))
-
-## [v1.1.1](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.1) (2017-02-12)
-
-[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.0...v1.1.1)
-
 **Implemented enhancements:**
 
 - make ensure for package and service configurable [\#11](https://github.com/voxpupuli/puppet-proxysql/pull/11) ([mcrauwel](https://github.com/mcrauwel))
@@ -153,6 +241,10 @@ These should not affect the functionality of the module.
 **Merged pull requests:**
 
 - modulesync 0.20.0 [\#12](https://github.com/voxpupuli/puppet-proxysql/pull/12) ([mcrauwel](https://github.com/mcrauwel))
+
+## [v1.1.1](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.1) (2017-02-12)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-proxysql/compare/v1.1.0...v1.1.1)
 
 ## [v1.1.0](https://github.com/voxpupuli/puppet-proxysql/tree/v1.1.0) (2017-02-11)
 

@@ -1,9 +1,7 @@
-# == Class proxysql::install
+# @summary This class is called from proxysql for install.
 #
-# This class is called from proxysql for install.
-#
+# @api private
 class proxysql::install {
-
   if $proxysql::package_source {
     case $facts['os']['family'] {
       'Debian': {
@@ -45,15 +43,26 @@ class proxysql::install {
     mode   => $proxysql::datadir_mode,
   }
 
-  class { 'mysql::client':
-    package_name    => $proxysql::mysql_client_package_name,
-    bindings_enable => false,
+  if $proxysql::errorlog_file {
+    file { $proxysql::errorlog_file:
+      ensure => file,
+      path   => $proxysql::errorlog_file,
+      owner  => $proxysql::errorlog_file_owner,
+      group  => $proxysql::errorlog_file_group,
+      mode   => $proxysql::errorlog_file_mode,
+    }
   }
 
-  Class['mysql::client::install']
-  -> Class['proxysql::admin_credentials']
+  if $proxysql::manage_mysql_client {
+    class { 'mysql::client':
+      package_name    => $proxysql::mysql_client_package_name,
+      bindings_enable => false,
+    }
 
-  Class['mysql::client::install']
-  -> Class['proxysql::reload_config']
+    Class['mysql::client::install']
+    -> Class['proxysql::admin_credentials']
 
+    Class['mysql::client::install']
+    -> Class['proxysql::reload_config']
+  }
 }

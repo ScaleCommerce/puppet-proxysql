@@ -34,6 +34,8 @@ The module requires Puppet 5.5.8 and above. It also depends on:
 
 For up to date details on external dependencies, please see the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json) or for released versions, the [puppet forge page](https://forge.puppet.com/puppet/proxysql/dependencies).
 
+[puppet/selinux](https://forge.puppet.com/puppet/selinux) is an optional `soft` dependency and not even listed in the [metadata.json](https://github.com/voxpupuli/puppet-proxysql/blob/master/metadata.json).  No Operating Systems *require* this module to be present, but if it is, it will be used to install SELinux rules that allow logrotate to work.  See [manage\_selinux](#manage_selinux)
+
 ### Beginning with proxysql
 
 To install the ProxySQL software with all the default options:
@@ -329,6 +331,22 @@ The ensure of the ProxySQL service resource. Defaults to 'running'
 ##### `datadir`
 The directory where ProxySQL will store it's data. defaults to '/var/lib/proxysql'
 
+##### `errorlog_file`
+The File where ProxySQL will store its error logs. Defaults to '/var/lib/proxysql/proxysql.log'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_mode`
+The filesystem mode for the `errorlog_file`. Defaults to '0600'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_owner`
+Owner of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+
+##### `errorlog_file_group`
+Group of the `errorlog_file`. Defaults to 'proxysql'. Available from ProxySQL v2.0.0
+
+##### `manage_selinux`
+Whether to create the required selinux rules for logrotate to work.  Defaults to `true`, but is only applicable to systems where SELinux is active (`enforcing` or `permissive`).
+This parameter also requires the [puppet/selinux](https://forge.puppet.com/puppet/selinux) module to be installed.
+
 ##### `listen_ip`
 The ip where the ProxySQL service will listen on. Defaults to '0.0.0.0' aka all configured IP's on the machine
 
@@ -343,6 +361,12 @@ The username to connect to the ProxySQL admin interface. Defaults to 'admin'
 
 ##### `admin_password`
 The password to connect to the ProxySQL admin interface. Defaults to 'admin'
+
+##### `stats_username`
+The username to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
+
+##### `stats_password`
+The password to connect with read-only permissions to the ProxySQL admin interface. Defaults to 'stats'
 
 ##### `admin_listen_ip`
 The ip where the ProxySQL admin interface will listen on. Defaults to '127.0.0.1'

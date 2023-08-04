@@ -1,14 +1,12 @@
-# == Class proxysql::config
+# @summary This class is called from proxysql for service config.
 #
-# This class is called from proxysql for service config.
-#
+# @api private
 class proxysql::config {
-
   $config_settings = $proxysql::config_settings
   $proxy_config_file = $proxysql::proxy_config_file
   $split_config = $proxysql::split_config
 
-  if $proxysql::manage_config_file  {
+  if $proxysql::manage_config_file {
     file { 'proxysql-config-file':
       ensure                  => file,
       path                    => $proxysql::config_file,

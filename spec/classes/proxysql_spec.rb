@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
+require 'deep_merge'
 
 describe 'proxysql' do
   context 'supported operating systems' do
@@ -30,7 +33,13 @@ describe 'proxysql' do
           it { is_expected.to contain_class('mysql::client').with(bindings_enable: false) }
 
           if facts[:osfamily] == 'RedHat'
-            it { is_expected.to contain_yumrepo('proxysql_repo').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
+            if facts[:operatingsystem] == 'Amazon' && facts[:operatingsystemmajrelease] == '2016'
+              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl('http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/6') }
+            else
+              it { is_expected.to contain_yumrepo('proxysql_2_0').with_baseurl("http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/#{facts[:operatingsystemmajrelease]}") }
+            end
+            it { is_expected.to contain_yumrepo('proxysql_repo').with_ensure('absent') }
+            it { is_expected.to contain_yumrepo('proxysql_1_4').with_ensure('absent') }
           end
 
           it do
@@ -41,7 +50,7 @@ describe 'proxysql' do
           sys_user = 'proxysql'
           sys_group = 'proxysql'
 
-          admin_socket = if facts[:operatingsystemrelease] == '18.04'
+          admin_socket = if ['18.04', '20.04'].include?(facts[:operatingsystemrelease])
                            '/var/lib/proxysql/proxysql_admin.sock'
                          else
                            '/tmp/proxysql_admin.sock'
@@ -76,8 +85,24 @@ describe 'proxysql' do
                                                             enable: true)
           end
 
+          if facts[:osfamily] == 'RedHat'
+            context 'with restart = true' do
+              context 'and proxysql 1.4.16' do
+                let(:params) { { 'restart' => true, 'version' => '1.4.16' } }
+
+                it { is_expected.to contain_service('proxysql').with_start('/usr/bin/proxysql --reload') }
+              end
+
+              context 'and proxysql 2.0.6' do
+                let(:params) { { 'restart' => true, 'version' => '2.0.6' } }
+
+                it { is_expected.to contain_service('proxysql').with_start('/etc/init.d/proxysql reload') }
+              end
+            end
+          end
+
           unless (facts[:osfamily] == 'RedHat' && facts[:operatingsystemmajrelease] == '7') ||
-                 (facts[:operatingsystem] == 'Ubuntu' && facts[:operatingsystemmajrelease] == '18.04') ||
+                 (facts[:operatingsystem] == 'Ubuntu' && ['18.04', '20.04'].include?(facts[:operatingsystemmajrelease])) ||
                  (facts[:operatingsystem] == 'Debian' && facts[:operatingsystemmajrelease] =~ %r{^(9|10)$})
             it { is_expected.to contain_service('proxysql').with_hasstatus(true) }
             it { is_expected.to contain_service('proxysql').with_hasrestart(true) }
@@ -85,12 +110,12 @@ describe 'proxysql' do
 
           it do
             is_expected.to contain_exec('wait_for_admin_socket_to_open').with(
-              command:   "test -S #{admin_socket}",
-              unless:    "test -S #{admin_socket}",
-              tries:     3,
+              command: "test -S #{admin_socket}",
+              unless: "test -S #{admin_socket}",
+              tries: 3,
               try_sleep: 10,
-              require:   'Service[proxysql]',
-              path:      '/bin:/usr/bin'
+              require: 'Service[proxysql]',
+              path: '/bin:/usr/bin'
             )
           end
         end
@@ -99,6 +124,28 @@ describe 'proxysql' do
           let(:params) { { 'datadir_mode' => '0644' } }
 
           it { is_expected.to contain_file('proxysql-datadir').with_mode('0644') }
+        end
+
+        if facts[:osfamily] == 'RedHat'
+          describe 'manage_selinux' do
+            context 'on systems with selinux enabled' do
+              let(:facts) do
+                facts.deep_merge(
+                  os: { selinux: { current_mode: 'enforcing' } }
+                )
+              end
+
+              context 'by default' do
+                it { is_expected.to contain_class('proxysql::selinux') }
+              end
+
+              context 'when manage_selinux is `false`' do
+                let(:params) { { 'manage_selinux' => false } }
+
+                it { is_expected.not_to contain_class('proxysql::selinux') }
+              end
+            end
+          end
         end
       end
     end

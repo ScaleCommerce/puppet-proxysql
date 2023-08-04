@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
@@ -29,16 +31,17 @@ Puppet::Type.newtype(:proxy_mysql_galera_hostgroup) do
   end
 
   ensurable do
+    desc 'Manage the state of this type.'
     defaultvalues
     defaultto :present
   end
 
   validate do
-    [
-      :writer_hostgroup,
-      :backup_writer_hostgroup,
-      :reader_hostgroup,
-      :offline_hostgroup
+    %i[
+      writer_hostgroup
+      backup_writer_hostgroup
+      reader_hostgroup
+      offline_hostgroup
     ].each do |namevar|
       raise Puppet::Error, "proxy_mysql_galera_hostgroup: #{namevar} is required or use `<writer_hostgroup>-<backup_writer_hostgroup>-<reader_hostgroup>-<offline_hostgroup>` style resource title" unless self[namevar]
     end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'proxysql class' do
-  unless fact('os.release.major') == '18.04' ||
+  unless ['18.04', '20.04'].include?(fact('os.release.major')) ||
          (fact('os.name') == 'Debian' && fact('os.release.major') == '10') # There are no proxysql 1.4 packages for these OSes
     context 'version 1.4' do
       it 'works idempotently with no errors' do
@@ -72,6 +74,8 @@ describe 'proxysql class' do
         listen_port              => 3306,
         admin_username           => 'admin',
         admin_password           => Sensitive('654321'),
+        stats_username           => 'stats',
+        stats_password           => Sensitive('567890'),
         monitor_username         => 'monitor',
         monitor_password         => Sensitive('123456'),
         override_config_settings => {
@@ -200,6 +204,15 @@ describe 'proxysql class' do
         apply                 => 1,
       }
 
+      proxy_mysql_query_rule { 'mysql_query_rule-2':
+        rule_id               => 2,
+        active                => 1,
+        username              => 'tester2',
+        match_pattern         => '^SELECT `foo`\\.\\* FROM `bar` WHERE \\(\\(\\(`foo`\\.`bar` = .*\\)\\)\\)',
+        destination_hostgroup => 2,
+        apply                 => 1,
+      }
+
       EOS
 
       # Run it twice and test for idempotency
@@ -231,6 +244,7 @@ describe 'proxysql class' do
       its(:stdout) { is_expected.to match '^Test MySQL Cluster 10-20$' }
     end
 
+    # rubocop:todo RSpec/RepeatedExampleGroupBody
     describe command("mysql -NB -e 'SELECT comment FROM mysql_replication_hostgroups WHERE writer_hostgroup = 10 AND reader_hostgroup = 30;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to eq('') }
@@ -275,6 +289,7 @@ describe 'proxysql class' do
 
     describe command("mysql -NB -e 'SELECT username FROM mysql_users;'") do
       its(:exit_status) { is_expected.to eq 0 }
+
       its(:stdout) do
         is_expected.to match 'tester1'
         is_expected.to match 'tester2'
@@ -315,12 +330,24 @@ describe 'proxysql class' do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^tester1$' }
     end
+    # rubocop:enable RSpec/RepeatedExampleGroupBody
 
     describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 1;'") do
       its(:exit_status) { is_expected.to eq 0 }
       its(:stdout) { is_expected.to match '^\^SELECT$' }
     end
+
+    describe command("mysql -NB -e 'SELECT username FROM mysql_query_rules WHERE rule_id = 2;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match '^tester2$' }
+    end
+
+    describe command("mysql -NB -e 'SELECT match_pattern FROM mysql_query_rules WHERE rule_id = 2;'") do
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match %r{^\^SELECT `foo`\\\\.\\\\\* FROM `bar` WHERE \\\\\(\\\\\(\\\\\(`foo`\\\\\.`bar` = \.\*\\\\\)\\\\\)\\\\\)$} }
+    end
   end
+
   context 'with restart => true' do
     it 'works idempotently with no errors' do
       pp = <<-EOS
@@ -329,6 +356,8 @@ describe 'proxysql class' do
         listen_port              => 3306,
         admin_username           => 'admin',
         admin_password           => Sensitive('654321'),
+        stats_username           => 'stats',
+        stats_password           => Sensitive('567890'),
         monitor_username         => 'monitor',
         monitor_password         => Sensitive('123456'),
         override_config_settings => {
@@ -341,6 +370,7 @@ describe 'proxysql class' do
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
     end
+
     describe service('proxysql') do
       it { is_expected.to be_running }
     end
