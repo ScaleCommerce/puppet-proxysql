@@ -11,7 +11,7 @@ class Puppet::Provider::Proxysql < Puppet::Provider
 
   # Optional defaults file
   def self.defaults_file
-    "--defaults-extra-file=#{Facter.value(:root_home)}/.my.cnf" if File.file?("#{Facter.value(:root_home)}/.my.cnf")
+    "--defaults-extra-file=#{Facter.value(:root_home)}/.my.proxysql.cnf" if File.file?("#{Facter.value(:root_home)}/.my.proxysql.cnf")
   end
 
   def defaults_file

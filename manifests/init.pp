@@ -5,7 +5,7 @@
 # @param package_ensure
 #   The ensure of the ProxySQL package resource.
 # @param package_install_options
-#   An array of additional options to pass when installing a package. 
+#   An array of additional options to pass when installing a package.
 # @param service_name
 #   The name of the ProxySQL service resource.
 # @param service_ensure
@@ -23,7 +23,7 @@
 # @param errorlog_file_group
 #   Group of the `errorlog_file`. Available from ProxySQL v2.0.0
 # @param manage_selinux
-#   Whether to create the required selinux rules for logrotate to work. 
+#   Whether to create the required selinux rules for logrotate to work.
 #   This parameter also requires the `puppet/selinux` module to be installed.
 # @param manage_mysql_client
 #   Whether to include the mysql::client class.
@@ -151,16 +151,16 @@ class proxysql (
   String $listen_socket = $proxysql::params::listen_socket,
 
   String $admin_username = 'admin',
-  Sensitive[String] $admin_password = Sensitive('admin'),
+  String $admin_password = 'admin',
   String $admin_listen_ip = '127.0.0.1',
   Integer $admin_listen_port = 6032,
   String $admin_listen_socket = $proxysql::params::admin_listen_socket,
 
   String $stats_username = 'stats',
-  Sensitive[String] $stats_password = Sensitive('stats'),
+  String $stats_password = 'stats',
 
   String $monitor_username = 'monitor',
-  Sensitive[String] $monitor_password = Sensitive('monitor'),
+  String $monitor_password = 'monitor',
 
   Boolean $split_config = false,
 
@@ -170,7 +170,7 @@ class proxysql (
   String $config_file = '/etc/proxysql.cnf',
   Boolean $manage_config_file = true,
 
-  String $mycnf_file_name = '/root/.my.cnf',
+  String $mycnf_file_name = '/root/.my.proxysql.cnf',
   Boolean $manage_mycnf_file = true,
 
   Boolean $restart = false,
@@ -179,7 +179,7 @@ class proxysql (
   Boolean $save_to_disk = true,
 
   Boolean $manage_repo = true,
-  Pattern[/^[1|2]\.\d+\.\d+/] $version = $proxysql::params::version,
+  Pattern[/^[1|2|3]\.\d+\.\d+/] $version = $proxysql::params::version,
 
   Optional[String[1]] $package_source         = undef,
   Optional[String[1]] $package_checksum_value = undef,
@@ -189,12 +189,12 @@ class proxysql (
 
   String $sys_owner = $version ? {
     /^1/ => 'root',
-    /^2/ => 'proxysql',
+    /^2|3/ => 'proxysql',
   },
   String $sys_group = $sys_owner,
 
   String $cluster_username = 'cluster',
-  Sensitive[String] $cluster_password = Sensitive('cluster'),
+  String $cluster_password = 'cluster',
 
   Hash $override_config_settings = {},
 
@@ -212,14 +212,14 @@ class proxysql (
     datadir => $datadir,
     errorlog => $errorlog_file,
     admin_variables => {
-      admin_credentials => "${admin_username}:${admin_password.unwrap}",
+      admin_credentials => "${admin_username}:${admin_password}",
       mysql_ifaces      => "${admin_listen_ip}:${admin_listen_port};${admin_listen_socket}",
-      stats_credentials => "${stats_username}:${stats_password.unwrap}",
+      stats_credentials => "${stats_username}:${stats_password}",
     },
     mysql_variables => {
       interfaces       => "${listen_ip}:${listen_port};${listen_socket}",
       monitor_username => $monitor_username,
-      monitor_password => $monitor_password.unwrap,
+      monitor_password => $monitor_password,
     },
     mysql_servers => {},
     mysql_users => {},
@@ -233,9 +233,9 @@ class proxysql (
   $cluster_settings = $cluster_name ? {
     String  => {
       admin_variables => {
-        admin_credentials => "${admin_username}:${admin_password.unwrap};${cluster_username}:${cluster_password.unwrap}",
+        admin_credentials => "${admin_username}:${admin_password};${cluster_username}:${cluster_password}",
         cluster_username  => $cluster_username,
-        cluster_password  => "${cluster_password.unwrap}",
+        cluster_password  => "${cluster_password}",
       },
     },
     default => {},

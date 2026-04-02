@@ -340,7 +340,7 @@ Data type: `String`
 Path of the my.cnf file where the connections details for the admin interface is save. This is required for the providers to work.
 This will only be configured if `manage_mycnf_file` is set to `true`.
 
-Default value: `'/root/.my.cnf'`
+Default value: `'/root/.my.proxysql.cnf'`
 
 ##### <a name="-proxysql--manage_mycnf_file"></a>`manage_mycnf_file`
 
@@ -385,7 +385,7 @@ Default value: `true`
 
 ##### <a name="-proxysql--version"></a>`version`
 
-Data type: `Pattern[/^[1|2]\.\d+\.\d+/]`
+Data type: `Pattern[/^[1|2|3]\.\d+\.\d+/]`
 
 The version of proxysql being managed. This parameter affects the repository configured when `manage_repo == true` and how the service is managed.
 It does not affect the package version being installed. It is used as a hint to the puppet module on how to configure proxysql. To control the exact version
@@ -445,7 +445,7 @@ Default value:
 ```puppet
 $version ? {
     /^1/ => 'root',
-    /^2/ => 'proxysql'
+    /^2|3/ => 'proxysql'
 ```
 
 ##### <a name="-proxysql--sys_group"></a>`sys_group`

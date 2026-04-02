@@ -7,6 +7,29 @@
 [![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
 [![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/proxysql.svg)](https://forge.puppet.com/puppet/proxysql)
 
+## ScaleCommerce Fork
+
+This is a fork of [voxpupuli/puppet-proxysql](https://github.com/voxpupuli/puppet-proxysql) with the following customizations:
+
+### `.my.proxysql.cnf` instead of `.my.cnf`
+
+The default path for the ProxySQL admin credentials file is `/root/.my.proxysql.cnf` instead of `/root/.my.cnf`.
+This avoids conflicts with MySQL's own `.my.cnf` on hosts where both MySQL and ProxySQL are running.
+
+Affected files: `manifests/init.pp`, `lib/puppet/provider/proxysql.rb`, `lib/facter/proxysql_runtime.rb`, all `lib/puppet/type/*.rb` (autorequire), specs.
+
+### Plain String passwords instead of Sensitive
+
+Upstream uses `Sensitive[String]` for password parameters with `.unwrap` calls. This fork uses plain `String` types to maintain compatibility with existing Hiera data and Puppet 7 setups.
+
+Affected files: `manifests/init.pp`, `templates/my.cnf.erb`.
+
+### Upstream PR #247
+
+ProxySQL 3.0.x repository support and improved admin socket readiness check from [voxpupuli/puppet-proxysql#247](https://github.com/voxpupuli/puppet-proxysql/pull/247).
+
+---
+
 ## Table of Contents
 
 1. [Overview](#overview)
