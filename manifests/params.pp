@@ -16,6 +16,26 @@ class proxysql::params {
         $_admin_listen_socket = "${datadir}/proxysql_admin.sock"
       }
 
+      $repo20 = {
+        comment  => 'ProxySQL 2.0.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => ' ',
+        key      => {
+          'name'   => 'proxysql-2.0.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.0.x/repo_pub_key',
+        },
+      }
+      $repo21 = {
+        comment  => 'ProxySQL 2.1.x APT repository',
+        location => "http://repo.proxysql.com/ProxySQL/proxysql-2.1.x/${facts['os']['distro']['codename']}/",
+        release  => './',
+        repos    => ' ',
+        key      => {
+          'name'   => 'proxysql-2.1.x.asc',
+          'source' => 'https://repo.proxysql.com/ProxySQL/proxysql-2.1.x/repo_pub_key',
+        },
+      }
       $repo22 = {
         comment  => 'ProxySQL 2.2.x APT repository',
         location => "http://repo.proxysql.com/ProxySQL/proxysql-2.2.x/${facts['os']['distro']['codename']}/",
@@ -93,6 +113,22 @@ class proxysql::params {
       $repo_os_major_version = $facts['os']['release']['major'] ? {
         '2016'  => '6',
         default => $facts['os']['release']['major'],
+      }
+      $repo20             = {
+        name     => 'proxysql_2_0',
+        descr    => 'ProxySQL 2.0.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.0.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
+      }
+      $repo21             = {
+        name     => 'proxysql_2_1',
+        descr    => 'ProxySQL 2.1.x YUM repository',
+        baseurl  => "http://repo.proxysql.com/ProxySQL/proxysql-2.1.x/centos/${repo_os_major_version}",
+        enabled  => true,
+        gpgcheck => true,
+        gpgkey   => 'http://repo.proxysql.com/ProxySQL/repo_pub_key',
       }
       $repo22             = {
         name     => 'proxysql_2_2',

@@ -13,6 +13,8 @@ class proxysql::repo {
       /^2\.4\./ => $proxysql::params::repo24,
       /^2\.3\./ => $proxysql::params::repo23,
       /^2\.2\./ => $proxysql::params::repo22,
+      /^2\.1\./ => $proxysql::params::repo21,
+      /^2\.0\./ => $proxysql::params::repo20,
       default   => fail("Unsupported `proxysql::version` ${proxysql::version}")
     }
     case $facts['os']['family'] {
@@ -50,6 +52,16 @@ class proxysql::repo {
         }
         if ($proxysql::version !~ /^2\.2\./) {
           yumrepo { $proxysql::params::repo22['name']:
+            ensure => absent,
+          }
+        }
+        if ($proxysql::version !~ /^2\.1\./) {
+          yumrepo { $proxysql::params::repo21['name']:
+            ensure => absent,
+          }
+        }
+        if ($proxysql::version !~ /^2\.0\./) {
+          yumrepo { $proxysql::params::repo20['name']:
             ensure => absent,
           }
         }
